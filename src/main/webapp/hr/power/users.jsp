@@ -86,7 +86,7 @@
 				}
 			} ] ]
 		});
-		//初始化表单
+		//初始化添加表单
 		$('#insertUser').form({    
 		    url:"../../users/insertUser",   
 		    success:function(data){    
@@ -99,16 +99,39 @@
 		    	   $("#insertDiv").dialog("close");//关闭模态框
 		    	   //刷新页面
 		    	   location.reload();
+		       }else{
+		    	   $.messager.alert('消息','添加用户失败','error');
 		       }
 		    }    
 		});
+		//初始化修改模态框
+		$('#updateUserForm').form({    
+		    url:"../../users/updateUser",   
+		    success:function(data){    
+		       // alert(data); //data就是服务器返回的信息  
+		       if(data==1){
+		    	   //修改成功
+		    	   //重置表单
+		    	  	resetUserForm2();
+		    	   //刷新页面
+		    	   location.reload();
+		       }else{
+		    	   $.messager.alert('消息','添加用户失败','error');
+		       }
+		    }    
+		});
+	})
+	
+	//添加的时候验证用户是否可用
+	$("#insertUserIdTextbox").on("blur",function (){
+		alert(1);
 	})
 	
 	//提交用户信息
 	function insertUser(){
 		$('#insertUser').submit(); 
 	}
-	//重置添加用户的方法
+	//添加模态框中取消按钮功能
 	function resetUserForm(){
 		 $('#insertUser').form("reset");
   	     $("#insertDiv").dialog("close");//关闭模态框
@@ -116,16 +139,19 @@
 	//打开修改模态框
 	//function updateUser(name,trueName,pwd,roleId){
 	function updateUser(msg){
-		alert(msg);
-	
-		/* $('#u_name').textbox({    
-			   value:name     
+		//alert(msg);
+	    //设置密码 为密码框
+	    $('#u_password').textbox({    
+			type:"password"  
+		});
+		 $('#u_name').textbox({    
+			   value:msg.u_name  
 		});
 		$('#u_true_name').textbox({    
-		   value:trueName     
+		   value:msg.u_true_name 
 		});
 		$('#u_password').textbox({    
-		   value:pwd    
+		   value:msg.u_password  
 		});
 		//初始化角色下拉列表
 		$('#roleSelect2').combobox({    
@@ -134,7 +160,7 @@
 		    textField:'role_name',
 		    loadFilter:function (data){
 		    	for(i=0;i<data.length;i++){
-		    		if(data[i].role_id==roleId){
+		    		if(data[i].role_id==msg.role.role_id){
 		    			data[i].selected=true;
 		    			break;
 		    		}
@@ -148,13 +174,22 @@
 		    }
 		}); 
 		//打开添加模态框
-		$("#updateDiv").dialog("open"); */
+		$("#updateDiv").dialog("open"); 
 	}
+	//点击修改模态框中的取消
+	function resetUserForm2(){
+		 $('#updateUserForm').form("reset");//重置表单数据
+  	     $("#updateDiv").dialog("close");//关闭模态框
+	}
+	//重置密码的超链接功能
 	function setPassWrod2(){
 		$('#u_password').textbox({    
-			   value:"123456789"    
+			type:"text",   
+			value:"123456"    
 		});
+		
 	}
+	
 </script>
 				
 </head>
@@ -162,21 +197,21 @@
     <!-- 修改模态框 -->
     <div id="updateDiv" class="easyui-dialog" title="修改"
 		style="width: 600px; height: 400px;"
-		data-options="closable:false,top:30,draggable:false,iconCls:'icon-save',resizable:true,modal:true,closed:true,buttons:[{text:'修改',handler:function (){}},{text:'取消',handler:function (){}}]">
+		data-options="closable:false,top:30,draggable:false,iconCls:'icon-save',resizable:true,modal:true,closed:true,buttons:[{text:'修改',handler:function (){}},{text:'取消',handler:function (){resetUserForm2()}}]">
 		<form style="margin-top: 20px;" id="updateUserForm" class="easyui-form"
 			method="post">
 			<div style="margin-bottom: 20px; margin-left: 30px;">
-				<input id="u_name" class="easyui-textbox" name="u_name" style="width: 300px"
+				<input readonly="readonly" id="u_name" class="easyui-textbox" name="u_name" style="width: 300px"
 					data-options="label:'账号:',required:true">
 			</div>
 			<div style="margin-bottom: 20px; margin-left: 30px;">
-				<input id="u_true_name" class="easyui-textbox" name="u_true_name" style="width: 300px"
+				<input readonly="readonly" id="u_true_name" class="easyui-textbox" name="u_true_name" style="width: 300px"
 					data-options="label:'姓名:',required:true">
 			</div>
 			<div style="margin-bottom: 20px; margin-left: 30px;">
-				<input id="u_password" readonly="readonly" class="easyui-textbox" name="u_password" style="width: 300px"
+				<input type="password"  id="u_password" readonly="readonly" class="easyui-textbox" name="u_password" style="width: 300px"
 					data-options="label:'密码:'">
-				<a href="javascript:setPassWrod2()">重置密码</a>
+				<a href="javascript:setPassWrod2()">重置密码:123456</a>
 			</div>
 			<div style="margin-bottom: 20px; margin-left: 30px;">
 				<input id="roleSelect2" name="role.role_id" data-options="label:'角色:'"/> 
@@ -191,7 +226,7 @@
 		<form style="margin-top: 20px;" id="insertUser" class="easyui-form"
 			method="post">
 			<div style="margin-bottom: 20px; margin-left: 30px;">
-				<input class="easyui-textbox" name="u_name" style="width: 300px"
+				<input  id="insertUserIdTextbox" class="easyui-textbox" name="u_name" style="width: 300px"
 					data-options="label:'账号:',required:true">
 			</div>
 			<div style="margin-bottom: 20px; margin-left: 30px;">

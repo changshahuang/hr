@@ -31,7 +31,11 @@ public class SysRightController {
 			id=0;
 		}
 		//得到当前用户的所有权限
-		List<SysRight> userList=((Users)session.getAttribute("user")).getRole().getRights();
+		Users u=(Users)session.getAttribute("user");
+		if(u==null) {
+			return null;
+		}
+		List<SysRight> userList=u.getRole().getRights();
 		System.out.println("当前用户的权限:"+userList);
 		//根据父id找子菜单
 		List<SysRight> list = MyUtil.getRightByParentId(userList, id);

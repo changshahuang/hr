@@ -31,6 +31,10 @@
 					    		return '<a href="javascript:addTabs(\''+node.text+'\',\''+node.attributes.url+'\')">'+node.text+"</a>";
 					    	}
 					    	return node.text;
+					    },
+					    onLoadError:function (aa){
+					    	//加载不到数据session中没有登录
+					    	location.href="../login.jsp";
 					    }
 					}); 
 					

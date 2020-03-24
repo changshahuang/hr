@@ -61,6 +61,14 @@ public class UsersController {
 		System.out.println(users);
 		return map;
 	}
+	//修改用户信息
+	@RequestMapping("/updateUserByUname")
+	@ResponseBody
+	public Integer updateUserByUname(Users user) {
+		System.out.println("修改用户："+user);
+		
+		return us.updateUserByUname(user);
+	}
 }
 
 

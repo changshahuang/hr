@@ -104,22 +104,7 @@
 		       }
 		    }    
 		});
-		//初始化修改模态框
-		$('#updateUserForm').form({    
-		    url:"../../users/updateUser",   
-		    success:function(data){    
-		       // alert(data); //data就是服务器返回的信息  
-		       if(data==1){
-		    	   //修改成功
-		    	   //重置表单
-		    	  	resetUserForm2();
-		    	   //刷新页面
-		    	   location.reload();
-		       }else{
-		    	   $.messager.alert('消息','添加用户失败','error');
-		       }
-		    }    
-		});
+		
 	})
 	
 	//添加的时候验证用户是否可用
@@ -136,6 +121,27 @@
 		 $('#insertUser').form("reset");
   	     $("#insertDiv").dialog("close");//关闭模态框
 	}
+	
+	$(function (){
+		//初始化修改模态框
+		$('#updateUserForm').form({    
+		    url:"../../users/updateUserByUname",   
+		    success:function(data){    
+		       // alert(data); //data就是服务器返回的信息  
+		       if(data==1){
+		    	   //修改成功
+		    	   //重置表单
+		    	  	resetUserForm2();
+		    	   //刷新页面
+		    	   location.reload();
+		       }else{
+		    	   $.messager.alert('消息','修改用户失败','error');
+		       }
+		    }    
+		});
+	})
+	
+	
 	//打开修改模态框
 	//function updateUser(name,trueName,pwd,roleId){
 	function updateUser(msg){
@@ -189,7 +195,10 @@
 		});
 		
 	}
-	
+	//点击修改按钮
+	function clickUpdateBt(){
+		$('#updateUserForm').submit(); 
+	}
 </script>
 				
 </head>
@@ -197,7 +206,7 @@
     <!-- 修改模态框 -->
     <div id="updateDiv" class="easyui-dialog" title="修改"
 		style="width: 600px; height: 400px;"
-		data-options="closable:false,top:30,draggable:false,iconCls:'icon-save',resizable:true,modal:true,closed:true,buttons:[{text:'修改',handler:function (){}},{text:'取消',handler:function (){resetUserForm2()}}]">
+		data-options="closable:false,top:30,draggable:false,iconCls:'icon-save',resizable:true,modal:true,closed:true,buttons:[{text:'修改',handler:function (){clickUpdateBt()}},{text:'取消',handler:function (){resetUserForm2()}}]">
 		<form style="margin-top: 20px;" id="updateUserForm" class="easyui-form"
 			method="post">
 			<div style="margin-bottom: 20px; margin-left: 30px;">
@@ -214,7 +223,7 @@
 				<a href="javascript:setPassWrod2()">重置密码:123456</a>
 			</div>
 			<div style="margin-bottom: 20px; margin-left: 30px;">
-				<input id="roleSelect2" name="role.role_id" data-options="label:'角色:'"/> 
+				<input id="roleSelect2" name="role.role_id" style="width: 300px" data-options="label:'角色:'"/> 
 			</div>
 		</form>
 	</div>
@@ -238,7 +247,7 @@
 					data-options="label:'密码:',required:true">
 			</div>
 			<div style="margin-bottom: 20px; margin-left: 30px;">
-				<input id="roleSelect" name="role.role_id" data-options="label:'角色:'"/> 
+				<input id="roleSelect" name="role.role_id" style="width: 300px" data-options="label:'角色:'"/> 
 			</div>
 		</form>
 	</div>

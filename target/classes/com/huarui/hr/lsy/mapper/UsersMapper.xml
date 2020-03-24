@@ -27,5 +27,7 @@
  	<insert id="insertUser">
  		INSERT INTO users (u_name, u_true_name,u_password, u_roleid) VALUES (#{u_name},#{u_true_name},#{u_password},#{role.role_id})
  	</insert>
- 	
+ 	<update id="updateUserByUname">
+ 		update users set u_password=#{u_password},u_roleid=#{role.role_id} where u_name=#{u_name}
+ 	</update>
  </mapper>

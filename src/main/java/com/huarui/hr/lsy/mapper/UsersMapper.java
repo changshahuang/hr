@@ -12,6 +12,8 @@ public interface UsersMapper {
 	public Users queryUsersByNameAndPwd(Users user);
 
 	public List<Users> queryUsersAndRole(MyPage page);
-	
+
 	public Integer insertUser(Users user);
+
+	public Integer updateUserByUname(Users user);
 }

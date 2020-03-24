@@ -17,5 +17,10 @@ public class SysRoleServiceImp implements SysRoleService {
 		// TODO Auto-generated method stub
 		return sysRoleMapper.queryRole();
 	}
+	@Override
+	public SysRole  queryRoleAndRightByRoleId(SysRole role) {
+		
+		return sysRoleMapper.queryRoleById(role.getRole_id());
+	}
 
 }

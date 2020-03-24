@@ -6,4 +6,5 @@ import com.huarui.hr.entity.SysRole;
 
 public interface SysRoleService {
 	public List<SysRole> queryRole();
+	public SysRole queryRoleAndRightByRoleId(SysRole role);
 }

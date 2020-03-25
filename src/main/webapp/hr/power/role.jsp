@@ -53,16 +53,31 @@
 		//选中角色的样式
 		$(".myButton").css("background-color","white");
 		$(obj).css("background-color","pink");
-		
+		//得到页面全部的权限
+		var allRights=$("input[name=allRight]");
+		//清空上一个角色的权限
+		allRights.each(function (){
+				$(this).prop("checked","");
+		});
+		//选中当前角色的权限
 		$.get(
 				"../../role/queryRoleAndRightByRoleId", 
 				{role_id:rid},
 				function(data){
+					//得到当前角色的权限
 					var rights=data.rights;
 					for(i=0;i<rights.length;i++){
 						/* var node = $('#rights').tree('find',rights[i].right_code);
-						$('#rights').tree('select', node.target); */
-					}
+						$('#rights').tree('select', node.target);*/
+						allRights.each(function (){
+							//得到指定页面的权限的value值
+							var va=$(this).val()
+							if(va==rights[i].right_code){
+								$(this).prop("checked","checked");
+							}
+						})
+						
+					} 
 					
 				},
 				"json"
@@ -79,13 +94,44 @@
 		    }
 		}); 
 	})
+	
+	//弹出添加角色模态框
+	function showSaveRole(){
+		$("#insertRoleDiv").dialog("open"); 
+	}
+	//重置添加角色表单关闭模态窗
+	function reSetRoleForm(){
+		 $('#insertRoleForm').form("reset");//重置表单数据
+  	     $("#insertRoleDiv").dialog("close");//关闭模态框
+	}
 </script>
 </head>
 <body>
-	
+    <!-- 添加角色模态框 -->
+	<div id="insertRoleDiv" class="easyui-dialog" title="添加"
+		style="width: 600px; height: 400px;"
+		data-options="closable:false,top:30,draggable:false,iconCls:'icon-save',resizable:true,modal:true,closed:true,buttons:[{text:'添加',handler:function (){}},{text:'取消',handler:function (){reSetRoleForm()}}]">
+		<form style="margin-top: 20px;" id="insertRoleForm" class="easyui-form"
+			method="post">
+			<div style="margin-bottom: 20px; margin-left: 30px;">
+				<input id="role_name" class="easyui-textbox" name="role_name" style="width: 300px"
+					data-options="label:'角色名称:',required:true">
+			</div>
+			<div style="margin-bottom: 20px; margin-left: 30px;">
+				<input id="role_desc" class="easyui-textbox" name="role_desc" style="width: 300px"
+					data-options="label:'角色备注:',required:true">
+			</div>
+			<div style="margin-bottom: 20px; margin-left: 30px;">
+				<select data-options="label:'是否启用:'" id="role_flag" class="easyui-combobox" name="role_flag" style="width:300px;">   
+				    <option value="0">禁用</option>
+				    <option value="1">启用</option>    
+				</select> 
+			</div>
+		</form>
+	</div>
 	<!-- 自定义工具 -->
 	<div id="panelTool">
-		<a style="text-decoration:none; margin-top:-6px; height:30px;width: 108px;background-position: 0px 6px" href="javascript:alert('edit')" class="icon-add">
+		<a style="text-decoration:none; margin-top:-6px; height:30px;width: 108px;background-position: 0px 6px" href="javascript:showSaveRole()" class="icon-add">
 			<span style="font-weight:bold;margin-left: 18px;line-height: 28px;font-size: 15px">添加新角色</span>
 		</a>
 	</div>

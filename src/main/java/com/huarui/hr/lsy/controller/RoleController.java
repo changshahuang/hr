@@ -31,5 +31,12 @@ public class RoleController {
 		SysRole sysRole = roleService.queryRoleAndRightByRoleId(role);
 		return sysRole;
 	}
+	
+	@RequestMapping("/insertRole")
+	@ResponseBody
+	public Integer insertRole(SysRole role) {
+		System.out.println("Ìí¼Ó½ÇÉ«:"+role);
+		return roleService.insertRole(role);
+	}
 
 }

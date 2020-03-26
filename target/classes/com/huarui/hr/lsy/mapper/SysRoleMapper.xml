@@ -24,4 +24,8 @@
  	<select id="queryRole" resultMap="myRole">
  		select * from sys_role
  	</select>
+ 	
+ 	<insert id="insertRole">
+ 		insert into sys_role(role_name,role_desc,role_flag) values(#{role_name},#{role_desc},#{role_flag})
+ 	</insert>
  </mapper>

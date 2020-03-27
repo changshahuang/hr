@@ -173,9 +173,10 @@
 			}
 			checkedParentMenu($("#right"+pid)[0]);
 		}
-		if($(obj).prop("checked")==false){
-			var id=$(obj).prop("id");
+		//取消自己取消儿子,不需要做点中自己选中儿子
+		var id=$(obj).prop("id");
 			id=id.substring(5);
+		if($(obj).prop("checked")==false){
 			$("input[data-parentid="+id+"]").each(function (){
 				$(this).prop("checked","");
 			})

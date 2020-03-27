@@ -148,24 +148,9 @@
 		});
 		alert("重置当前角色权限");
 	}
-	//点击子菜单选中父菜单
-	/* function xxx(obj){
-		var pid=$(obj).data("parentid");
-		var bl=0;
-		$("input[data-parentid="+pid+"]").each(function (){
-			if($(this).prop("checked")){
-				bl=1;
-				return false;
-			}
-		})
-		if(bl){
-			$("#right"+pid).prop("checked","checked");
-		}else{
-			$("#right"+pid).prop("checked","");
-		}
-	} */
+
 	//找父亲：点击子菜单选中父菜单
-	function checkedParentMenu2(obj){
+	function checkedParentMenu(obj){
 		//找当前菜单的主菜单
 		var f=$(obj).parent().parent().parent().parent().parent();
 		var pid=$(obj).data("parentid");
@@ -180,17 +165,26 @@
 				}
 			})
 			if(bl){
+				//选中自己的父亲
 				$("#right"+pid).prop("checked","checked");
 			}else{
+				//父亲没选中
 				$("#right"+pid).prop("checked","");
 			}
-			checkedParentMenu2($("#right"+pid)[0]);
+			checkedParentMenu($("#right"+pid)[0]);
+		}
+		if($(obj).prop("checked")==false){
+			var id=$(obj).prop("id");
+			id=id.substring(5);
+			$("input[data-parentid="+id+"]").each(function (){
+				$(this).prop("checked","");
+			})
 		}
 	}
 	//由于复选框都是后面生成的，所以只能通过父容器去委托事件
 	$(function (){
 		$("#rights").on("click","input[name=allRight]",function (){
-			checkedParentMenu2(this);
+			checkedParentMenu(this);
 		});
 	})
 </script>

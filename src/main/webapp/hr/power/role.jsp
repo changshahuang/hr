@@ -137,6 +137,15 @@
 		    }    
 		});  
 	})
+	//清空所有的权限
+	function clearMenu(){
+		//得到页面全部的权限
+		var allRights=$("input[name=allRight]");
+		//清空上一个角色的权限
+		allRights.each(function (){
+				$(this).prop("checked","");
+		});
+	}
 </script>
 </head>
 <body> 
@@ -171,7 +180,7 @@
 	</div>
 	<!-- 自定义工具:修改 -->
 	<div id="panelTool2">
-		<a style="text-decoration:none; margin-top:-6px; height:30px;width: 108px;background-position: 0px 6px" href="javascript:" class="icon-remove">
+		<a style="text-decoration:none; margin-top:-6px; height:30px;width: 108px;background-position: 0px 6px" href="javascript:clearMenu()" class="icon-remove">
 			<span style="font-weight:bold;margin-left: 18px;line-height: 28px;font-size: 15px">清空所选权限</span>
 		</a>
 	</div>

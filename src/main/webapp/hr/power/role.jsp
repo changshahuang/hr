@@ -105,7 +105,8 @@
 		    animate:true,
 		    lines:true,
 		    formatter:function(node){
-		    	return "<input type='checkbox' name='allRight' id='right"+node.id+"' value='"+node.id+"'/>"+node.text;
+		    	//设置一个自定义属性方便后面的操作
+		    	return "<input type='checkbox' data-parentid='"+node.attributes.pid+"' name='allRight' id='right"+node.id+"' value='"+node.id+"'/>"+node.text;
 		    }
 		}); 
 	})
@@ -145,7 +146,53 @@
 		allRights.each(function (){
 				$(this).prop("checked","");
 		});
+		alert("重置当前角色权限");
 	}
+	//点击子菜单选中父菜单
+	/* function xxx(obj){
+		var pid=$(obj).data("parentid");
+		var bl=0;
+		$("input[data-parentid="+pid+"]").each(function (){
+			if($(this).prop("checked")){
+				bl=1;
+				return false;
+			}
+		})
+		if(bl){
+			$("#right"+pid).prop("checked","checked");
+		}else{
+			$("#right"+pid).prop("checked","");
+		}
+	} */
+	//找父亲：点击子菜单选中父菜单
+	function checkedParentMenu2(obj){
+		//找当前菜单的主菜单
+		var f=$(obj).parent().parent().parent().parent().parent();
+		var pid=$(obj).data("parentid");
+		var menuName=f[0].nodeName;
+		var bl=0;
+		//判断不是根菜单，也就是父亲的id不为0的
+		if(menuName=="LI"){
+			$("input[data-parentid="+pid+"]").each(function (){
+				if($(this).prop("checked")){
+					bl=1;
+					return false;
+				}
+			})
+			if(bl){
+				$("#right"+pid).prop("checked","checked");
+			}else{
+				$("#right"+pid).prop("checked","");
+			}
+			checkedParentMenu2($("#right"+pid)[0]);
+		}
+	}
+	//由于复选框都是后面生成的，所以只能通过父容器去委托事件
+	$(function (){
+		$("#rights").on("click","input[name=allRight]",function (){
+			checkedParentMenu2(this);
+		});
+	})
 </script>
 </head>
 <body> 

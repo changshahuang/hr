@@ -53,6 +53,7 @@ public class SysRightController {
 				Map<String, Object> attr = new HashMap<String, Object>();
 				attr.put("url", sysRight.getRight_url());
 				attr.put("tip", sysRight.getRight_tip());
+				attr.put("pid", sysRight.getRight_parent_code());
 				map.put("attributes", attr);
 			}
 			meunList.add(map);
@@ -75,6 +76,11 @@ public class SysRightController {
 				father.put("id", f.getRight_code());
 				father.put("text", f.getRight_text());
 				father.put("state", "open");
+				Map<String, Object> attr = new HashMap<String, Object>();
+				attr.put("url", f.getRight_url());
+				attr.put("tip", f.getRight_tip());
+				attr.put("pid", f.getRight_parent_code());
+				father.put("attributes", attr);
 				// ÕÒ¶ù×Ó
 				MyUtil.getSon(list, father, f.getRight_code());
 				fatherList.add(father);

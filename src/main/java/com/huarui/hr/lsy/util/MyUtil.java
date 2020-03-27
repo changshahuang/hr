@@ -34,6 +34,11 @@ public class MyUtil {
 				Map<String, Object> son = new HashMap<String, Object>();
 				son.put("id", sr.getRight_code());
 				son.put("text", sr.getRight_text());
+				Map<String, Object> attr = new HashMap<String, Object>();
+				attr.put("url", sr.getRight_url());
+				attr.put("tip", sr.getRight_tip());
+				attr.put("pid", sr.getRight_parent_code());
+				son.put("attributes", attr);
 				// 此儿子节点还是别人的父亲,sr.getRight_parent_code()!=0 表示不是最大根节点
 				if ("parent".equals(sr.getRight_type()) && sr.getRight_parent_code() != 0) {
 					son.put("state", "open");

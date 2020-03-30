@@ -30,4 +30,8 @@
  	<update id="updateUserByUname">
  		update users set u_password=#{u_password},u_roleid=#{role.role_id} where u_name=#{u_name}
  	</update>
+ 	
+ 	<select id="queryUserCountByRoleId" resultType="Integer">
+ 		select count(u_id) from users where u_roleid=#{roleid}
+ 	</select>
  </mapper>

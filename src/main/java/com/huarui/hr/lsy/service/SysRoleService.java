@@ -8,4 +8,7 @@ public interface SysRoleService {
 	public List<SysRole> queryRole();
 	public SysRole queryRoleAndRightByRoleId(SysRole role);
 	public Integer insertRole(SysRole role);
+	public Integer deleteRoleById(SysRole role);
+	public Integer updateRole(SysRole role,Integer[] rightId);
+	
 }

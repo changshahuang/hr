@@ -95,6 +95,7 @@
 		$("#roleUpdatePanel").panel("open");
 		//修改模态框中角色赋值
 		$("#update_role_name").textbox({value:thisRole.role_name});
+		$("#update_role_id").val(thisRole.role_id);
 		$("#update_role_desc").textbox({value:thisRole.role_desc?thisRole.role_desc:''});
 		$("#update_role_flag").combobox("select",thisRole.role_flag);
 	}
@@ -188,6 +189,63 @@
 			checkedParentMenu(this);
 		});
 	})
+	
+	//删除角色
+	function deleteRole(){
+		//alert("要删除的角色是："+$("#update_role_id").val()+";确定角色下是否用户，删除角色的同时请删除角色和权限中间表的数据");
+		if(confirm("确定删除："+$("#update_role_name").textbox("getText")+"?")){
+			$.get(
+					"../../role/deleteRoleById", 
+					{role_id:$("#update_role_id").val()},
+					function (data){
+						if(data){
+							alert("删除成功！");	
+							location.reload();
+						}else{
+							alert("角色下有用户不能删除");
+						}
+						
+					},
+					"json"
+			);
+		}
+	}
+	//修改角色和权限
+	function updateRoleCommit(){
+		//封装成对象
+		var obj=new Object();
+		obj.role_id=eval($("#update_role_id").val());
+		obj.role_name=$("#update_role_name").textbox("getText");
+		obj.role_desc=$("#update_role_desc").textbox("getText");
+		obj.role_flag=$("#update_role_flag").combobox("getValue");
+		
+		//保存选中的权限
+		var arr=[];
+		var index=0;
+		$("input[name=allRight]").each(function (){
+			if($(this).prop("checked")){
+			  arr[index]=eval($(this).val());
+			  index++;
+			}
+		});
+		//转成json
+		//提交数据
+		$.ajax({
+			url:"../../role/updateRoleAndRoleRight",
+			type:"post",
+			traditional:true,//防止深度序列化,默认是false
+			data:$.param(obj)+"&arr="+arr,
+			success:function (data){
+				console.info(data);
+				if(data){
+					location.reload();
+				}else{
+					alert("修改失败！");
+				}
+			},
+			dataType:"json"
+		});
+	}
 </script>
 </head>
 <body> 
@@ -228,8 +286,8 @@
 	</div>
 	<!-- 自定义底部:修改 -->
 	<div id="panelTool3" style="height: 40px;padding: 4px">
-		<button style="float: right;" type="button" class="easyui-linkbutton" data-options="iconCls:'icon-clear'">删除</button>
-		<button style="float: right;margin-right: 20px" type="button" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改角色及其权限</button>
+		<button onclick="deleteRole()" style="float: right;" type="button" class="easyui-linkbutton" data-options="iconCls:'icon-clear'">删除</button>
+		<button onclick="updateRoleCommit()" style="float: right;margin-right: 20px" type="button" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改角色及其权限</button>
 	</div>
 	<!-- 所有角色面板 -->
 	<DIV style="position: sticky;width: 100%;top:8px">
@@ -246,6 +304,7 @@
 				data-options="closed:true,openAnimation:'slide',footer:'#panelTool3',tools:'#panelTool2'">
 				<form style="margin-top: 20px;" id="updateRoleForm"  class="easyui-form"
 					method="post">
+					<input type="hidden" id="update_role_id" name="role_id" value="0"/>
 					<div style="margin-bottom: 20px; margin-left: 30px;">
 						<input id="update_role_name" class="easyui-textbox" name="role_name" style="width: 300px"
 							data-options="label:'角色名称:',required:true">
